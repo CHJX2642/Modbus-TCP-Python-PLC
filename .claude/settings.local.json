@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(\"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" -m pip install pymodbus)",
+      "Bash(D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe *)",
+      "WebFetch(domain:zhuanlan.zhihu.com)",
+      "WebSearch",
+      "WebFetch(domain:localhost)",
+      "Bash(\"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" -m pip install openpyxl)"
+    ]
+  }
+}
