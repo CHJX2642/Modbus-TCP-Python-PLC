@@ -1,5 +1,19 @@
+# Python 缓存文件
 __pycache__/
 *.pyc
 *.pyo
+
+# 数据日志文件
 data_log_*.csv
+
+# IDE 配置文件
 .idea/
+.vscode/
+
+# 虚拟环境
+venv/
+.env
+
+# 系统文件
+.DS_Store
+Thumbs.db

@@ -7,7 +7,25 @@
       "WebFetch(domain:zhuanlan.zhihu.com)",
       "WebSearch",
       "WebFetch(domain:localhost)",
-      "Bash(\"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" -m pip install openpyxl)"
+      "Bash(\"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" -m pip install openpyxl)",
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)",
+      "Bash(timeout 8 python main.py)",
+      "Bash(timeout 10 python main.py)",
+      "Bash(\"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" -m pip install numpy scikit-learn flask)",
+      "Bash(\"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" test_read.py)",
+      "Bash('D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe' -c ' *)",
+      "Bash(timeout 15 \"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" main.py)",
+      "Bash(timeout 12 \"D:\\\\Users\\\\21023\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\" main.py)",
+      "Bash(python -m py_compile energy_model.py)",
+      "Bash(python -m py_compile data_collector.py)",
+      "Bash(python -m py_compile shared_state.py)",
+      "Bash(python -m py_compile main.py)",
+      "Bash(python -m py_compile plc_variables.py)",
+      "Bash(python -m py_compile traffic_pattern.py)",
+      "Bash(python -m py_compile flask_app.py)",
+      "Bash(python -m py_compile csv_manager.py)",
+      "Bash(python -m py_compile display.py)"
     ]
   }
 }
