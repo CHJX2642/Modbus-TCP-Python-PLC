@@ -45,7 +45,7 @@ ROWS_PER_FILE = 30                       # 每个 CSV 文件最多写入多少�
 MAX_CSV_FILES = 6                        # 最多同时保留多少个 CSV 旧文件，超出后自动删除最旧的
 
 # --- 终端显示参数 ---
-DISPLAY_LINES_OFFSET = 3                 # 终端显示占用的额外行数（表头1行 + 分隔线1行 + 空行1行）
+DISPLAY_LINES_OFFSET = 5                 # 终端显示占用的额外行数（时间戳1行 + 表头1行 + 分隔线1行 + 统计1行 + 空行1行）
                                          # 用于光标上移覆盖旧数据，实现终端原地刷新效果
 
 # ========================================================================================
@@ -114,6 +114,11 @@ def main():
     display_lines = len(reg_map) + DISPLAY_LINES_OFFSET        # 终端显示占用的总行数，用于光标上移覆盖
     running = True                                             # 主循环运行标志，Ctrl+C 时置为 False 退出循环
 
+    # 采集统计计数器
+    total_count = 0                                            # 总采集次数
+    success_count = 0                                          # 成功采集次数
+    fail_count = 0                                             # 失败采集次数
+
     # ========== 第6步：注册 Ctrl+C 信号处理 ==========
     def stop(sig, frame):
         """
@@ -152,6 +157,8 @@ def main():
 
             # --- 7.4 读取成功：解析 → 显示 → 写入 CSV ---
             if all_regs:                                       # 寄存器读取成功，all_regs 非空
+                total_count += 1                               # 总采集次数 +1
+                success_count += 1                             # 成功次数 +1
                 values = collector.parse_values(all_regs)      # 将原始寄存器值解析为 {变量键: 实际值} 字典
 
                 # 终端原地刷新显示（覆盖上一次的输出）
@@ -160,6 +167,9 @@ def main():
                 first = False                                  # 首次采集已完成，后续都需要覆盖
                 print(f"[{now}]")                              # 打印当前时间戳
                 print_table(values, reg_map)                   # 以表格形式打印所有变量的当前值
+                # 打印采集统计信息
+                rate = success_count / total_count * 100 if total_count else 0  # 计算成功率
+                print(f"采集: {total_count} 次 | 成功: {success_count} | 失败: {fail_count} | 成功率: {rate:.1f}%")
                 print()                                        # 打印空行，与下次覆盖保持对齐
 
                 # 写入 CSV 文件
@@ -179,6 +189,8 @@ def main():
 
             # --- 7.5 读取失败 ---
             else:                                              # 寄存器读取返回空列表（读取失败）
+                total_count += 1                               # 总采集次数 +1
+                fail_count += 1                                # 失败次数 +1
                 print(f"[{now}] 读取失败")                     # 打印失败信息和时间戳
 
             # --- 7.6 等待下一次采集 ---
