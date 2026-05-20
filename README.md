@@ -8,22 +8,19 @@
 - 支持 `Int`、`Word`、`DInt`、`DWord`、`Real`、`Bool` 等数据类型
 - 持续轮询采集，终端表格实时刷新
 - 自动分文件保存 CSV，旧文件自动清理
-- 提供 Web API 接口，支持远程数据查询
+- 断线自动重连
 - 修改 Excel 即可适配新项目，无需改代码
 
 ## 项目结构
 
 ```
-├── main.py                # 配置中心 + 启动入口
-├── data_acquisition.py    # 数据采集逻辑封装
-├── modbus_client.py       # Modbus TCP 通讯封装
-├── data_converter.py      # 数据类型转换（Int/Real/Bool）
-├── excel_reader.py        # Excel 变量表读取
-├── csv_manager.py         # CSV 文件管理（创建/轮转/清理）
+├── main.py                # 配置中心 + 启动入口（所有参数在此修改）
+├── data_acquisition.py    # 数据采集逻辑封装（连接、读取、重连）
+├── modbus_client.py       # Modbus TCP 通讯封装（支持 FC01~FC10）
+├── data_converter.py      # 数据类型转换（寄存器值 ↔ 实际值）
+├── excel_reader.py        # Excel 变量表读取（解析 TIA Portal 导出格式）
+├── csv_manager.py         # CSV 文件管理（创建、轮转、清理）
 ├── display.py             # 终端表格显示
-├── shared_state.py        # 线程安全的共享状态
-├── flask_app.py           # Web API 服务
-├── test_read.py           # 快速测试脚本
 ├── Modbus_Map.xlsx        # 变量表（TIA Portal 导出格式）
 └── requirements.txt       # Python 依赖库
 ```
@@ -33,7 +30,6 @@
 - Python 3.10+
 - pymodbus >= 3.0.0
 - openpyxl >= 3.0.0
-- flask >= 3.0.0
 
 ## 安装
 
@@ -83,14 +79,13 @@ python main.py
 输出示例：
 
 ```
-Web 服务已启动: http://localhost:5000
 已连接到 192.168.0.1:502
 变量表: Modbus_Map.xlsx（10 个变量）
 读取范围: 地址 0~5
 采集间隔: 1000ms | 每 30 条换文件 | 保留 6 个
 按 Ctrl+C 停止
 
-[2026-05-06 12:00:00.123]
+[2026-05-20 14:30:15.123]
 变量名                          偏移量        类型        值               描述
 --------------------------------------------------------------------------------
 温度传感器                       字节0         float32     25.3
@@ -99,24 +94,6 @@ Web 服务已启动: http://localhost:5000
 ```
 
 按 `Ctrl+C` 停止采集。
-
-### 4. 测试连接
-
-使用测试脚本验证 Modbus 通讯：
-
-```bash
-python test_read.py
-```
-
-### 5. Web API
-
-程序启动后会自动开启 Web 服务，通过浏览器或 HTTP 请求获取实时数据：
-
-```
-GET http://localhost:5000/api/status
-```
-
-返回 JSON 格式的采集数据和系统状态。
 
 ## 地址换算规则
 
@@ -141,7 +118,7 @@ Modbus 地址 = DB 字节偏移 ÷ 2
 - 每采集 `ROWS_PER_FILE` 条数据自动创建新文件
 - 文件夹内仅保留最新的 `MAX_CSV_FILES` 个文件
 - 旧文件自动删除
-- 文件名格式：`data_log_20260506_120000.csv`
+- 文件名格式：`data_log_20260520_143015.csv`
 
 ## PLC 端配置要求
 
